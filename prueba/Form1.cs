@@ -104,11 +104,11 @@ namespace prueba
                 if (lineGuide >= lineas.Length)
                 {
                     lineGuide = 0;
-                    textBox1.Text = lineas[lineGuide];
-                    textBox2.Text = lineas[lineGuide + 1];
-                    textBox3.Text = lineas[lineGuide + 2];
-                    textBox4.Text = lineas[lineGuide + 3];
-                    lineGuide = lineGuide + 4;
+                    textBox1.Text = "";
+                    textBox2.Text = "";
+                    textBox3.Text = "";
+                    textBox4.Text = "";
+                    MessageBox.Show("Ya no hay mas registros que mostrar");
                 }
                 else
                 {
@@ -158,23 +158,41 @@ namespace prueba
             FileStream conector = new FileStream(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt", FileMode.Open);
             StreamReader lector = new StreamReader(conector);
 
-            while (lector.EndOfStream == false)
+            if (textBox1.Text != "")
             {
-                if (lector.ReadLine() == textBox1.Text)
-                {
-                    textBox2.Text = lector.ReadLine();
-                    textBox3.Text = lector.ReadLine();
-                    textBox4.Text = lector.ReadLine();
-                }
-                else
-                {
-                    lector.ReadLine();
-                    lector.ReadLine();
-                    lector.ReadLine();
+                textBox2.Text = "";
+                textBox3.Text = "";
+                textBox4.Text = "";
 
+                while (lector.EndOfStream == false)
+                {
+                    if (lector.ReadLine() == textBox1.Text)
+                    {
+                        textBox2.Text = lector.ReadLine();
+                        textBox3.Text = lector.ReadLine();
+                        textBox4.Text = lector.ReadLine();
+                    }
+                    else
+                    {
+                        lector.ReadLine();
+                        lector.ReadLine();
+                        lector.ReadLine();
+
+                    }
                 }
+                if (textBox2.Text == "" && textBox3.Text == "" && textBox4.Text == "")
+                {
+                    MessageBox.Show("No se pudo encontrar ningun registro de nombre: " + textBox1.Text);
+                }
+                lector.Close();
             }
-            lector.Close();
+            else
+            {
+                lector.Close();
+                
+                MessageBox.Show("Primero seleccione un elemento del registro");
+                lector.Close();
+            }
 
 
         }
@@ -187,56 +205,69 @@ namespace prueba
 
 
 
-
-
-            if (MessageBox.Show("¿Desea guardar los cambios?", "Prueba",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            if (textBox1.Text != "")
             {
 
-                for (int i = 0; i < lineAlm.Length; i++)
+                if (MessageBox.Show("¿Desea guardar los cambios?", "Prueba",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
-                    if (lineAlm[i] == textBox1.Text)
+
+                    for (int i = 0; i < lineAlm.Length; i++)
                     {
-                        i++;
-                        textBox2.Text = lineAlm[i];
-                        i++;
-                        textBox3.Text = lineAlm[i];
-                        i++;
-                        textBox4.Text = lineAlm[i];
+                        if (lineAlm[i] == textBox1.Text)
+                        {
+                            i++;
+                            textBox2.Text = lineAlm[i];
+                            i++;
+                            textBox3.Text = lineAlm[i];
+                            i++;
+                            textBox4.Text = lineAlm[i];
+                        }
+
                     }
 
+                    for (int i = 0; i < lineAlm.Length; i++)
+                    {
+                        escritor.WriteLine(lineAlm[i]);
+                    }
+                    escritor.Close();
                 }
-
-                for (int i = 0; i < lineAlm.Length; i++)
+                else
                 {
-                    escritor.WriteLine(lineAlm[i]);
+                    for (int i = 0; i < lineAlm.Length; i++)
+                    {
+                        if (lineAlm[i] == textBox1.Text)
+                        {
+                            i++;
+                            lineAlm[i] = textBox2.Text;
+                            i++;
+                            lineAlm[i] = textBox3.Text;
+                            i++;
+                            lineAlm[i] = textBox4.Text;
+                        }
+                    }
+
+                    for (int i = 0; i < lineAlm.Length; i++)
+                    {
+                        escritor.WriteLine(lineAlm[i]);
+                    }
+                    escritor.Close();
+
                 }
-                escritor.Close();
             }
-            else
-            {
-                for (int i = 0; i < lineAlm.Length; i++)
-                {
-                    if (lineAlm[i] == textBox1.Text)
-                    {
-                        i++;
-                        lineAlm[i] = textBox2.Text;
-                        i++;
-                        lineAlm[i] = textBox3.Text;
-                        i++;
-                        lineAlm[i] = textBox4.Text;
-                    }
-                }
-
-                for (int i = 0; i < lineAlm.Length; i++)
-                {
-                    escritor.WriteLine(lineAlm[i]);
-                }
+            else {
                 escritor.Close();
+                FileStream conectorr = new FileStream(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt", FileMode.Open);
+                StreamWriter escritorr = new StreamWriter(conectorr);
+                for (int i = 0; i < lineAlm.Length; i++)
+                {
+                    escritorr.WriteLine(lineAlm[i]);
+                }
 
+                MessageBox.Show("Primero seleccione un elemento del registro");
+                escritorr.Close();
             }
         }
-
         private void button7_Click(object sender, EventArgs e)
         {
 
