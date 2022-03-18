@@ -3,6 +3,7 @@ namespace prueba
     public partial class Form1 : Form
     {
         int lineGuide = 0;
+        String nombre;
         String[] lineAlm = File.ReadAllLines(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt");
 
 
@@ -44,8 +45,10 @@ namespace prueba
 
         private void button1_Click(object sender, EventArgs e)
         {
+            lineAlm = File.ReadAllLines(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt");
             FileStream conector = new FileStream(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt", FileMode.Append);
             StreamWriter canalEscritura = new StreamWriter(conector);
+
             if (textBox1.Text == "")
             {
                 MessageBox.Show("Ingrese un nombre");
@@ -72,6 +75,9 @@ namespace prueba
             }
             else
             {
+                int conta = (lineAlm.Length / 5) + 1;
+
+                canalEscritura.WriteLine("200300" + conta.ToString());
                 canalEscritura.WriteLine(textBox1.Text);
                 canalEscritura.WriteLine(textBox2.Text);
                 canalEscritura.WriteLine(textBox3.Text);
@@ -91,17 +97,17 @@ namespace prueba
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            string[] lineas = File.ReadAllLines(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt");
+            lineAlm = File.ReadAllLines(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt");
 
 
-            if (lineas.Length == 0)
+            if (lineAlm.Length == 0)
             {
                 MessageBox.Show("No hay registros almacenados :(");
             }
             else
             {
 
-                if (lineGuide >= lineas.Length)
+                if (lineGuide >= lineAlm.Length)
                 {
                     lineGuide = 0;
                     textBox1.Text = "";
@@ -112,11 +118,11 @@ namespace prueba
                 }
                 else
                 {
-                    textBox1.Text = lineas[lineGuide];
-                    textBox2.Text = lineas[lineGuide + 1];
-                    textBox3.Text = lineas[lineGuide + 2];
-                    textBox4.Text = lineas[lineGuide + 3];
-                    lineGuide += 4;
+                    textBox1.Text = lineAlm[lineGuide + 1];
+                    textBox2.Text = lineAlm[lineGuide + 2];
+                    textBox3.Text = lineAlm[lineGuide + 3];
+                    textBox4.Text = lineAlm[lineGuide + 4];
+                    lineGuide += 5;
                 }
             }
 
@@ -138,7 +144,7 @@ namespace prueba
                 lector.ReadLine();
                 cont++;
             }
-            cantidad = cont / 4;
+            cantidad = cont / 5;
             MessageBox.Show("el archvio tiene " + cantidad + " registros");
             lector.Close();
 
@@ -166,7 +172,7 @@ namespace prueba
 
                 while (lector.EndOfStream == false)
                 {
-                    if (lector.ReadLine() == textBox1.Text)
+                    if (lector.ReadLine() + 1 == textBox1.Text)
                     {
                         textBox2.Text = lector.ReadLine();
                         textBox3.Text = lector.ReadLine();
@@ -180,6 +186,7 @@ namespace prueba
 
                     }
                 }
+
                 if (textBox2.Text == "" && textBox3.Text == "" && textBox4.Text == "")
                 {
                     MessageBox.Show("No se pudo encontrar ningun registro de nombre: " + textBox1.Text);
@@ -189,7 +196,7 @@ namespace prueba
             else
             {
                 lector.Close();
-                
+
                 MessageBox.Show("Primero seleccione un elemento del registro");
                 lector.Close();
             }
@@ -208,7 +215,7 @@ namespace prueba
             if (textBox1.Text != "")
             {
 
-                if (MessageBox.Show("¿Desea guardar los cambios?", "Prueba",
+                if (MessageBox.Show("¿Desea guardar los cambios?", "",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
 
@@ -255,7 +262,8 @@ namespace prueba
 
                 }
             }
-            else {
+            else
+            {
                 escritor.Close();
                 FileStream conectorr = new FileStream(@"C:\Users\vicen\OneDrive\Escritorio\Datos.txt", FileMode.Open);
                 StreamWriter escritorr = new StreamWriter(conectorr);
@@ -283,7 +291,7 @@ namespace prueba
                 {
                     for (int i = 0; i < lineAlm.Length; i++)
                     {
-                        if (lineAlm[i] == textBox1.Text)
+                        if (lineAlm[i + 1] == textBox1.Text)
                         {
 
                             lineAlm[i] = "null";
@@ -293,13 +301,16 @@ namespace prueba
                             lineAlm[i] = "null";
                             i++;
                             lineAlm[i] = "null";
+                            i++;
+                            lineAlm[i] = "null";
+
 
                             break;
 
                         }
                         else
                         {
-                            i = i + 3;
+                            i = +3;
                         }
                     }
                     for (int i = 0; i < lineAlm.Length; i++)
@@ -343,6 +354,27 @@ namespace prueba
                 escritorr.Close();
 
             }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Materias Materias = new Materias();
+            Materias.Show();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
